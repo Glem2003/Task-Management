@@ -1,0 +1,36 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'arial';
+}
+
+
+h1 {
+    font-size: 50px
+}
+
+
+h2 {
+    font-size: 40px
+}
+
+
+h3 {
+    font-size: 30px
+}
+
+
+h4 {
+    font-size: 24px
+}
+
+
+h5 {
+    font-size: 20px
+}
+
+
+h6 {
+    font-size: 18px
+}
