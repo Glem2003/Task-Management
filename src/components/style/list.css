@@ -1,0 +1,13 @@
+.list{
+    /*border: 1px solid #000;*/
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 10px; 
+    border-radius: 10px;
+}
+
+.list__title{
+    display: flex;
+    gap: 10px;
+}

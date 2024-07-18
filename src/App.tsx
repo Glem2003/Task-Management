@@ -7,10 +7,19 @@ import Btn from "./components/btn";
 import TaskList, { TaskListProps } from "./components/taskList";
 import TaskForm from "./components/form";
 import Filter from "./components/filter";
-import "./css/root.css";
-import "./css/style.css";
+import "./style/root.css";
+import "./style/style.css";
+import List from "./components/list";
+import { text } from "stream/consumers";
+
+//icons
+import { MdInbox } from "react-icons/md";
+import { FaStar } from "react-icons/fa";
+import { FaRegCalendar } from "react-icons/fa";
+import { TbAdjustmentsHorizontal } from "react-icons/tb";
 
 function App() {
+
   const [isForm, setIsForm] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [tasks, setTasks] = useState<TaskListProps[]>(() => {
@@ -22,6 +31,7 @@ function App() {
   const { title, description, setTitle, setDescription } = useTakeFormData();
   const { value, setValue } = useFilterState();
   const [inputCheck, setInputCheck] = useState<boolean>(true);
+  const [filterForm, setFilterForm] = useState<boolean>(false);
 
   useEffect(() => {
     handleSearch();
@@ -115,9 +125,59 @@ function App() {
     setFilteredTasks(filteredTasks);
   };
 
+  const listData = [
+    {
+      header: [
+        {
+          id: 'inbox',
+          text: 'Inbox',
+          images: (<MdInbox style={{ color: '#0098fd' }} />)
+        },
+        {
+          id: 'today',
+          text: 'Today',
+          images: (<FaStar style={{ color: '#ffe500' }} />)
+        },
+        {
+          id: 'coming-up',
+          text: 'Coming Up',
+          images: (<FaRegCalendar style={{ color: '#e53c51' }} />)
+        }
+      ]
+    }
+  ]
+
   return (
     <div className="App">
+
+      <aside className="aside">
+
+        {listData && listData.map((item) => (
+          item.header.map((lists) => (
+            <List key={lists.id} {...lists}>
+            </List>
+          ))
+        ))}
+
+        {filterForm && (
+          <Filter
+            inputChange={handleChange}
+            SearchBtnClick={handleSearch}
+            inputCheck={inputCheck}
+          />
+        )}
+
+        <div className="aside__under">
+          <Btn name="New list" span="+" />
+          <TbAdjustmentsHorizontal
+            style={{ fontSize: '20px', cursor: 'pointer' }}
+            onClick={() => setFilterForm(!filterForm)}/>
+        </div>
+
+      </aside>
+
       <main className="main">
+
         {filteredTasks.map((data) => (
           <TaskList
             key={data.id} {...data}
@@ -127,6 +187,7 @@ function App() {
             <Btn name="Delete" onClick={() => handleDelete(data.id)} />
           </TaskList>
         ))}
+
         {isForm && (
           <TaskForm
             title={title}
@@ -144,15 +205,15 @@ function App() {
             <Btn name="Close" onClick={handleClose} />
           </TaskForm>
         )}
-      </main>
-      <aside className="aside">
-        <Filter
-          inputChange={handleChange}
-          SearchBtnClick={handleSearch}
-          inputCheck={inputCheck}
+
+        <Btn
+          name="New item"
+          span="+"
+          onClick={handleAdd}
+          className="addBtn"
         />
-        <Btn name="Add Task" onClick={handleAdd} />
-      </aside>
+
+      </main>
     </div>
   );
 }

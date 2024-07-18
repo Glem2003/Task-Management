@@ -1,5 +1,5 @@
 //style
-import "./css/filter.css";
+import "./style/filter.css";
 
 //component
 import Btn from "../components/btn";
@@ -20,7 +20,6 @@ const Filter: React.FC<FilterProps> = (props) => {
 
     return (
         <div className="filter">
-            <h6>Filter control</h6>
             <form className="filter__form">
                 <div>
                     <label>All</label>

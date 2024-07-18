@@ -1,0 +1,14 @@
+.btn{
+    border: none;
+    background-color: transparent;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn__span{
+    margin-right: 10px;
+    font-size: 1.3rem;
+}

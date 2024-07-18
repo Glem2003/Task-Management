@@ -16,6 +16,7 @@
 }
 
 .taskList__state{
+    color: black;
     grid-area: state;
     font-weight: bold;
     font-size: 20px;
