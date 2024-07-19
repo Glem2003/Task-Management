@@ -17,7 +17,6 @@ const Btn: React.FC<BtnProps> = (props) => {
         span
     } = props
 
-
     const btnClass = className ? `btn ${className}` : "btn";
 
     return (

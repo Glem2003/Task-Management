@@ -1,0 +1,67 @@
+/*layout*/
+.App {
+    display: flex;
+    background-color: #2c2c2c;
+    color: white;
+    margin: 30px;
+    height: 90vh;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+.aside {
+    flex: .3;
+    background-color: #1a1a1a;
+    padding: 15px;
+    position: relative;
+}
+
+.main {
+    flex: 1;
+    padding: 20px 10%;
+    overflow-y: auto;
+}
+
+/*hidden scrollbar*/
+.transparent-scrollbar {
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    &::-webkit-scrollbar-horizontal {
+        height: 12px;
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+}
+
+/* components */
+/*main*/
+.addBtn {
+    position: absolute;
+    right: 30px;
+    bottom: 10px;
+}
+
+.main__search {
+    position: absolute;
+    cursor: pointer;
+    top: 15px;
+    right: 20px;
+}
+
+/*aside*/
+.aside__under {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #252525;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    padding: 15px 25px;
+}

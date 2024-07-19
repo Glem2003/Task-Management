@@ -1,12 +1,8 @@
 //style
 import "./style/filter.css";
 
-//component
-import Btn from "../components/btn";
-
 interface FilterProps {
     inputChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
-    SearchBtnClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
     inputCheck?: boolean
 }
 
@@ -14,7 +10,6 @@ const Filter: React.FC<FilterProps> = (props) => {
 
     const {
         inputChange,
-        SearchBtnClick,
         inputCheck
     } = props
 
@@ -37,7 +32,6 @@ const Filter: React.FC<FilterProps> = (props) => {
                     <label>Completed</label>
                     <input type="radio" name="filter" value={3} onChange={inputChange} />
                 </div>
-                <Btn name="Search" onClick={SearchBtnClick} />
             </form>
         </div>
     )
