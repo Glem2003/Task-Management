@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Task-Management/static/css/main.788a839b.css",
+    "main.js": "/Task-Management/static/js/main.5d7c03b0.js",
+    "index.html": "/Task-Management/index.html",
+    "main.788a839b.css.map": "/Task-Management/static/css/main.788a839b.css.map",
+    "main.5d7c03b0.js.map": "/Task-Management/static/js/main.5d7c03b0.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.788a839b.css",
+    "static/js/main.5d7c03b0.js"
+  ]
+}
