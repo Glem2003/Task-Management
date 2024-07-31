@@ -1,0 +1,17 @@
+.filter {
+    padding-left: 12px;
+    margin-top: 20px;
+}
+
+.filter__form {
+    display: flex;
+    gap: 15px;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.filter__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}

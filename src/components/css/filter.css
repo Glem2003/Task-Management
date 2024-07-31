@@ -1,9 +1,0 @@
-.filter {
-    border: 1px solid #000;
-}
-
-.filter__form {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-}

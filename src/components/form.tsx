@@ -1,5 +1,5 @@
 //style
-import "./css/form.css";
+import "./style/form.css";
 
 interface TaskFormProps {
     title: string,

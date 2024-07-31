@@ -1,132 +1,126 @@
-import React, { useState, useEffect } from "react";
-import { v4 as uuidv4 } from 'uuid';
+//style
+import "./assets/style/root.css";
+import "./assets/style/style.css";
 
-import useTakeFormData from "./hook/useTakeFormData";
-import useFilterState from "./hook/useFilterState";
+//icons
+import {
+  TbAdjustmentsHorizontal,
+  IoSearch,
+  FaRegPenToSquare,
+  FaTrash,
+  IoMdCloseCircle,
+  FaSave,
+  MdAddCircle
+} from './assets/icon/icons';
+
+//content
+import { listData } from "./content/index";
+
+//hook
+import useAppLogic from "./hook/useAppLogic";
+import useActiveListId from "./hook/useActiveListId";
+
+//components
 import Btn from "./components/btn";
-import TaskList, { TaskListProps } from "./components/taskList";
+import TaskList from "./components/taskList";
 import TaskForm from "./components/form";
 import Filter from "./components/filter";
-import "./css/root.css";
-import "./css/style.css";
+import List from "./components/list";
 
-function App() {
-  const [isForm, setIsForm] = useState<boolean>(false);
-  const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [tasks, setTasks] = useState<TaskListProps[]>(() => {
-    const storedTasks = localStorage.getItem('tasks');
-    return storedTasks ? JSON.parse(storedTasks) : [];
-  });
-  const [filteredTasks, setFilteredTasks] = useState<TaskListProps[]>(tasks);
-  const [editIndex, setEditIndex] = useState<number | null>(null);
-  const { title, description, setTitle, setDescription } = useTakeFormData();
-  const { value, setValue } = useFilterState();
-  const [inputCheck, setInputCheck] = useState<boolean>(true);
+const App = () => {
 
-  useEffect(() => {
-    handleSearch();
-    // tasks save in localStorage
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  }, [tasks]);
+  const {
+    isForm,
+    isEdit,
+    filteredTasks,
+    title,
+    description,
+    inputCheck,
+    filterForm,
+    setTitle,
+    setDescription,
+    setFilterForm,
+    handleFormAdd,
+    handleFormEdit,
+    handleFormSubmit,
+    handleFormSave,
+    handleFormClose,
+    handleFilterChange,
+    handleStateChange,
+    handleDelete
+  } = useAppLogic();
 
-  const handleAdd = () => {
-    setIsForm(true);
-    setIsEdit(false);
-    setTitle('');
-    setDescription('');
-  }
-
-  const handleDelete = (taskId: string) => {
-    setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
-  };
-
-  const handleSubmit = () => {
-    if (title.trim() === '') {
-      alert('Please enter a task name');
-      return;
-    }
-
-    const newTask: TaskListProps = { title, description, state: 1, id: uuidv4() };
-    setTasks([...tasks, newTask]);
-    setIsForm(false);
-    setTitle('');
-    setDescription('');
-  };
-
-  const handleEdit = (taskId: string) => {
-    const index = tasks.findIndex(task => task.id === taskId);
-    if (index !== -1) {
-      setIsForm(true);
-      setIsEdit(true);
-      setEditIndex(index);
-      setTitle(tasks[index].title);
-      setDescription(tasks[index].description ?? '');
-    }
-  };
-
-  const handleSave = () => {
-    if (editIndex !== null) {
-      const updatedTasks = tasks.map((task, index) => {
-        if (index === editIndex) {
-          return { ...task, title, description };
-        }
-        return task;
-      });
-      if (title === '') {
-        alert('Please do not leave the task name blank.');
-        return;
-      } else {
-        setTasks(updatedTasks);
-        setIsForm(false);
-        setTitle('');
-        setDescription('');
-        setEditIndex(null);
-      }
-    }
-  }
-
-  const handleClose = () => {
-    setIsForm(false);
-    setTitle('');
-    setDescription('');
-  }
-
-  const handleStateChange = (taskId: string) => {
-    setTasks(prevTasks =>
-      prevTasks.map((task) =>
-        task.id === taskId ? { ...task, state: (task.state < 3 ? task.state + 1 : 1) as 1 | 2 | 3 } : task
-      )
-    );
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-    setInputCheck(event.target.value === "");
-  }
-
-  const handleSearch = () => {
-    const filteredTasks = tasks.filter(task => {
-      if (value === '') {
-        return true; // if no value is selected, return all tasks
-      } else {
-        return task.state === Number(value); // filter tasks based on the selected value
-      }
-    });
-    setFilteredTasks(filteredTasks);
-  };
+  const { activeId, handleListClick, handleListOpen, openListId } = useActiveListId()
 
   return (
     <div className="App">
-      <main className="main">
+      <aside className="aside transparent-scrollbar">
+
+        <div className="aside__upper">
+          <div>
+            {listData.header.map((item) => (
+              <List
+                key={item.id}
+                {...item}
+                className={activeId === item.id ? 'active' : ''}
+                handleListClick={() => handleListClick(item.id)}
+              />
+            ))}
+          </div>
+
+          <div style={{ marginTop: '20px' }}>
+            {listData.main.map((item) => (
+              <List
+                key={item.id}
+                {...item}
+                elementClass={openListId.includes(item.id) ? 'active' : ''}
+                childListClass={openListId.includes(item.id) ? 'open' : ''}
+                handleListClick={() => handleListOpen(item.id)}
+              />
+            ))}
+          </div>
+
+          {filterForm && (
+            <Filter
+              inputChange={handleFilterChange}
+              inputCheck={inputCheck}
+            />
+          )}
+
+        </div>
+
+        <div className="aside__under">
+          <Btn name="New list" span="+" />
+          <TbAdjustmentsHorizontal
+            style={{ fontSize: '20px', cursor: 'pointer' }}
+            onClick={() => setFilterForm(!filterForm)} />
+        </div>
+      </aside>
+
+      <main className="main transparent-scrollbar">
+
+        {listData.header
+          .filter((item) => item.id === activeId)
+          .map((item) => (
+            <div className="main__header">
+              <span className="main__header--icon">{item.images}</span>
+              <h3 key={item.id}>{item.text}</h3>
+            </div>
+          ))
+        }
+
         {filteredTasks.map((data) => (
           <TaskList
             key={data.id} {...data}
             stateHandler={() => handleStateChange(data.id)}
           >
-            <Btn name="Edit" onClick={() => handleEdit(data.id)} />
-            <Btn name="Delete" onClick={() => handleDelete(data.id)} />
+            <div className="main__taskListBtnItem">
+              <Btn span={<FaRegPenToSquare />} onClick={() => handleFormEdit(data.id)} />
+              <Btn span={<FaTrash />} onClick={() => handleDelete(data.id)} />
+            </div>
           </TaskList>
         ))}
+
         {isForm && (
           <TaskForm
             title={title}
@@ -136,23 +130,29 @@ function App() {
             titleChangeHandler={(e) => setTitle(e.target.value)}
             descriptionChangeHandler={(e) => setDescription(e.target.value)}
           >
-            {isEdit ? (
-              <Btn name="Save" onClick={handleSave} />
-            ) : (
-              <Btn name="Submit" onClick={handleSubmit} />
-            )}
-            <Btn name="Close" onClick={handleClose} />
+            <div className="form__BtnItem">
+              {isEdit ? (
+                <Btn span={<FaSave />} onClick={handleFormSave} />
+              ) : (
+                <Btn span={<MdAddCircle />} onClick={handleFormSubmit} />
+              )}
+              <Btn span={<IoMdCloseCircle />} onClick={handleFormClose} />
+            </div>
           </TaskForm>
         )}
-      </main>
-      <aside className="aside">
-        <Filter
-          inputChange={handleChange}
-          SearchBtnClick={handleSearch}
-          inputCheck={inputCheck}
+
+        <Btn
+          name="New item"
+          span="+"
+          onClick={handleFormAdd}
+          className="addBtn"
         />
-        <Btn name="Add Task" onClick={handleAdd} />
-      </aside>
+
+        <div className="main__search">
+          <IoSearch />
+        </div>
+
+      </main>
     </div>
   );
 }

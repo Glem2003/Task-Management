@@ -1,5 +1,5 @@
 //style
-import "./css/taskList.css";
+import "./style/taskList.css";
 
 export interface TaskListProps {
     title: string,
