@@ -11,10 +11,10 @@
 }
 
 .aside {
-    flex: .3;
+    display: flex;
+    flex-direction: column;
     background-color: #1a1a1a;
-    padding: 15px;
-    position: relative;
+    overflow-y: auto;
 }
 
 .main {
@@ -47,6 +47,16 @@
     bottom: 10px;
 }
 
+.main__header {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.main__header--icon{
+    font-size: 2rem;
+}
+
 .main__search {
     position: absolute;
     cursor: pointer;
@@ -54,14 +64,36 @@
     right: 20px;
 }
 
+.main__taskListBtnItem{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    grid-area: btns;
+    padding: 0 10px; 
+}
+
+.form__BtnItem{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    padding: 10px;
+}
+
 /*aside*/
+.aside__upper{
+    flex: auto;
+    padding: 15px;
+}
 .aside__under {
     display: flex;
     justify-content: space-between;
     border-top: 1px solid #252525;
-    position: absolute;
-    bottom: 0;
+    position: sticky;
     width: 100%;
     left: 0;
-    padding: 15px 25px;
+    bottom: 0;
+    padding: 15px 28px;
+    background-color: #1a1a1a;
 }

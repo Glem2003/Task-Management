@@ -1,21 +1,22 @@
 /* layout */
-.taskList{
-    border: 3px double #000;
+.taskList {
+    border-top: 1px solid grey;
+    border-bottom: 1px solid grey;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    grid-template-areas: 'title title state' 'description description state';
+    grid-template-columns: repeat(3, 1fr) auto;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-areas: 'title title state btns' 'description description state btns';
 }
 
-.taskList__title{
+.taskList__title {
     grid-area: title;
 }
 
-.taskList__description{
+.taskList__description {
     grid-area: description;
 }
 
-.taskList__state{
+.taskList__state {
     color: black;
     grid-area: state;
     font-weight: bold;
@@ -29,14 +30,14 @@
 }
 
 /*component*/
-.state-waiting{
-    background-color: red;
+.state-waiting {
+    color: red;
 }
 
-.state-in-progress{
-    background-color: yellow;
+.state-in-progress {
+    color: yellow;
 }
 
-.state-completed{
-    background-color: green;
+.state-completed {
+    color: green;
 }

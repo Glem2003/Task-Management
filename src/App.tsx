@@ -6,6 +6,11 @@ import "./assets/style/style.css";
 import {
   TbAdjustmentsHorizontal,
   IoSearch,
+  FaRegPenToSquare,
+  FaTrash,
+  IoMdCloseCircle,
+  FaSave,
+  MdAddCircle
 } from './assets/icon/icons';
 
 //content
@@ -22,7 +27,7 @@ import TaskForm from "./components/form";
 import Filter from "./components/filter";
 import List from "./components/list";
 
-function App() {
+const App = () => {
 
   const {
     isForm,
@@ -45,35 +50,44 @@ function App() {
     handleDelete
   } = useAppLogic();
 
-  const { activeId, setActiveId, handleListClick } = useActiveListId()
+  const { activeId, handleListClick, handleListOpen, openListId } = useActiveListId()
 
   return (
     <div className="App">
-      <aside className="aside">
-        <div>
-          {listData.header.map((item) => (
-            <List
-              key={item.id}
-              {...item}
-              className={activeId === item.id ? 'active' : ''}
-              handleListClick={() => handleListClick(item.id)}
-            >
-            </List>
-          ))}
-        </div>
+      <aside className="aside transparent-scrollbar">
 
-        <div style={{ marginTop: '20px' }}>
-          {listData.main.map((item) => (
-            <List key={item.id} {...item} />
-          ))}
-        </div>
+        <div className="aside__upper">
+          <div>
+            {listData.header.map((item) => (
+              <List
+                key={item.id}
+                {...item}
+                className={activeId === item.id ? 'active' : ''}
+                handleListClick={() => handleListClick(item.id)}
+              />
+            ))}
+          </div>
 
-        {filterForm && (
-          <Filter
-            inputChange={handleFilterChange}
-            inputCheck={inputCheck}
-          />
-        )}
+          <div style={{ marginTop: '20px' }}>
+            {listData.main.map((item) => (
+              <List
+                key={item.id}
+                {...item}
+                elementClass={openListId.includes(item.id) ? 'active' : ''}
+                childListClass={openListId.includes(item.id) ? 'open' : ''}
+                handleListClick={() => handleListOpen(item.id)}
+              />
+            ))}
+          </div>
+
+          {filterForm && (
+            <Filter
+              inputChange={handleFilterChange}
+              inputCheck={inputCheck}
+            />
+          )}
+
+        </div>
 
         <div className="aside__under">
           <Btn name="New list" span="+" />
@@ -84,13 +98,26 @@ function App() {
       </aside>
 
       <main className="main transparent-scrollbar">
+
+        {listData.header
+          .filter((item) => item.id === activeId)
+          .map((item) => (
+            <div className="main__header">
+              <span className="main__header--icon">{item.images}</span>
+              <h3 key={item.id}>{item.text}</h3>
+            </div>
+          ))
+        }
+
         {filteredTasks.map((data) => (
           <TaskList
             key={data.id} {...data}
             stateHandler={() => handleStateChange(data.id)}
           >
-            <Btn name="Edit" onClick={() => handleFormEdit(data.id)} />
-            <Btn name="Delete" onClick={() => handleDelete(data.id)} />
+            <div className="main__taskListBtnItem">
+              <Btn span={<FaRegPenToSquare />} onClick={() => handleFormEdit(data.id)} />
+              <Btn span={<FaTrash />} onClick={() => handleDelete(data.id)} />
+            </div>
           </TaskList>
         ))}
 
@@ -103,12 +130,14 @@ function App() {
             titleChangeHandler={(e) => setTitle(e.target.value)}
             descriptionChangeHandler={(e) => setDescription(e.target.value)}
           >
-            {isEdit ? (
-              <Btn name="Save" onClick={handleFormSave} />
-            ) : (
-              <Btn name="Submit" onClick={handleFormSubmit} />
-            )}
-            <Btn name="Close" onClick={handleFormClose} />
+            <div className="form__BtnItem">
+              {isEdit ? (
+                <Btn span={<FaSave />} onClick={handleFormSave} />
+              ) : (
+                <Btn span={<MdAddCircle />} onClick={handleFormSubmit} />
+              )}
+              <Btn span={<IoMdCloseCircle />} onClick={handleFormClose} />
+            </div>
           </TaskForm>
         )}
 
@@ -122,6 +151,7 @@ function App() {
         <div className="main__search">
           <IoSearch />
         </div>
+
       </main>
     </div>
   );

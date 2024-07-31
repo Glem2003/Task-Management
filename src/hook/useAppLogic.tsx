@@ -63,9 +63,14 @@ const useAppLogic = () => {
     }
 
     const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(event.target.value);
-        setInputCheck(event.target.value === "");
-        handleSearch(event.target.value);
+        const value = event.target.value;
+        setValue((prevValues) => {
+            const updatedValues = event.target.checked
+                ? [...prevValues, value]
+                : prevValues.filter((v) => v !== value);
+            handleSearch(updatedValues);
+            return updatedValues;
+        });
     }
 
     return {

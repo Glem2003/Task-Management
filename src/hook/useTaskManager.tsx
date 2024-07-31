@@ -16,9 +16,10 @@ const useTaskManager = () => {
 
     const [filteredTasks, setFilteredTasks] = useState<TaskListProps[]>(tasks);
     const [editIndex, setEditIndex] = useState<number | null>(null);
+    const [filterValues, setFilterValues] = useState<string[]>([]);
 
     useEffect(() => {
-        handleSearch();
+        handleSearch(filterValues);
         localStorage.setItem('tasks', JSON.stringify(tasks));
     }, [tasks]);
 
@@ -28,7 +29,12 @@ const useTaskManager = () => {
     };
 
     const handleDelete = (taskId: string) => {
-        setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
+        const confirmed = window.confirm('Are you sure you want to delete this task?');
+        if (confirmed) {
+            setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
+            alert('Task deleted successfully!');
+        }
+
     };
 
     const handleEdit = (taskId: string) => {
@@ -59,17 +65,19 @@ const useTaskManager = () => {
                 task.id === taskId ? { ...task, state: (task.state < 3 ? task.state + 1 : 1) as 1 | 2 | 3 } : task
             )
         );
+        handleSearch(filterValues);
     };
 
-    const handleSearch = (value = '') => {
-        const filteredTasks = tasks.filter(task => {
-            if (value === '') {
-                return true;
-            } else {
-                return task.state === Number(value);
-            }
-        });
-        setFilteredTasks(filteredTasks);
+    const handleSearch = (values: string[] = []) => {
+        setFilterValues(values);
+        if (values.length === 0) {
+            setFilteredTasks(tasks);
+        } else {
+            const filteredTasks = tasks.filter(task => {
+                return values.includes(task.state.toString());
+            });
+            setFilteredTasks(filteredTasks);
+        }
     };
 
     return {

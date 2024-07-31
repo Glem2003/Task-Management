@@ -6,7 +6,10 @@ interface ListProps {
     className?: string
     images?: React.ReactNode
     handleListClick?: () => void
-    children?: React.ReactNode
+    element?: React.ReactNode
+    elementClass?: string
+    childList?: string[]
+    childListClass?: string
 }
 
 const List: React.FC<ListProps> = (props) => {
@@ -16,18 +19,37 @@ const List: React.FC<ListProps> = (props) => {
         text,
         className,
         handleListClick,
-        children
+        element,
+        elementClass,
+        childList,
+        childListClass
     } = props
 
+    const listClass = className ? `list ${className}` : 'list'
+    const elementClassName = elementClass ? `list__element ${elementClass}` : 'list__element'
+    const childListClassName = childListClass ? `list__childList ${childListClass}` : 'list__childList'
+
     return (
-        <div className={`list ${className}`} onClick={handleListClick}>
-            <div className="list__title">
-                <div>
+        <div className={listClass} onClick={handleListClick}>
+
+            <div className="list__head">
+                <div className="list__title">
                     {images}
+                    <p>{text}</p>
                 </div>
-                <p>{text}</p>
+                {element && (
+                    <span className={elementClassName}>{element}</span>
+                )}
             </div>
-            {children}
+
+            {childList && (
+                <div className={childListClassName}>
+                    {childList && childList.map((list, index) => (
+                        <p key={index}>{list}</p>
+                    ))}
+                </div>
+            )}
+            
         </div>
     )
 }

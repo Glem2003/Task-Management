@@ -1,11 +1,12 @@
 //style
+import { ReactElement } from "react";
 import "./style/btn.css";
 
 interface BtnProps {
-    name: string
+    name?: string
     onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
     className?: string
-    span?: string
+    span?: string | ReactElement
 }
 
 const Btn: React.FC<BtnProps> = (props) => {

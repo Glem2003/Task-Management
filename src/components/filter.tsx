@@ -16,21 +16,17 @@ const Filter: React.FC<FilterProps> = (props) => {
     return (
         <div className="filter">
             <form className="filter__form">
-                <div>
-                    <label>All</label>
-                    <input type="radio" name="filter" value={""} onChange={inputChange} checked={inputCheck} />
-                </div>
-                <div>
+                <div className="filter__item">
+                    <input type="checkbox" name="filter" value={1} onChange={inputChange} />
                     <label>Waiting</label>
-                    <input type="radio" name="filter" value={1} onChange={inputChange} />
                 </div>
-                <div>
+                <div className="filter__item">
+                    <input type="checkbox" name="filter" value={2} onChange={inputChange} />
                     <label>Progress</label>
-                    <input type="radio" name="filter" value={2} onChange={inputChange} />
                 </div>
-                <div>
+                <div className="filter__item">
+                    <input type="checkbox" name="filter" value={3} onChange={inputChange} />
                     <label>Completed</label>
-                    <input type="radio" name="filter" value={3} onChange={inputChange} />
                 </div>
             </form>
         </div>
